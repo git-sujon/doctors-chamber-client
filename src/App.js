@@ -1,11 +1,12 @@
-import logo from './logo.svg';
-import './App.css';
-import Button from '@mui/material/Button';
+import "./App.css";
+import React from "react";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./Routes/Routes";
 
 function App() {
   return (
-    <div className="App">
-   <Button variant="contained">Hello World</Button>
+    <div className="max-w-[1400px] mx-auto">
+      <RouterProvider router={router}></RouterProvider>
     </div>
   );
 }

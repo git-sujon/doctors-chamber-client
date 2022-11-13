@@ -13,7 +13,8 @@ const Home = () => {
             <InfoCards></InfoCards>
             <OurServices></OurServices>
             <ExceptionalCTA></ExceptionalCTA>
-            
+            <Appointment></Appointment>
+          
         </div>
     );
 };

@@ -12,6 +12,7 @@ const Home = () => {
             <HomeBanner></HomeBanner>
             <InfoCards></InfoCards>
             <OurServices></OurServices>
+            <ExceptionalCTA></ExceptionalCTA>
             
         </div>
     );

@@ -9,7 +9,8 @@ import Testimonial from './Testimonial/Testimonial';
 const Home = () => {
     return (
         <div className='mx-5 mx-auto'>
-        
+            <HomeBanner></HomeBanner>
+           
         </div>
     );
 };

@@ -6,13 +6,13 @@ import SectionName from "../../../componets/SectionName";
 
 const Appointment = () => {
   return (
-    <section className="text-white pr-32 my-44" style={{backgroundImage: `url(${bgimage})`}}>
-      <div className="hero ">
+    <section className="text-white lg:pr-32 px-10 my-44" style={{backgroundImage: `url(${bgimage})`}}>
+      <div className="hero py-10 lg:py-0 ">
         <div className="flex flex-col md:flex-row  items-center">
           <img
             src={doctor}
             alt=""
-            className="  -mt-36  "
+            className="  -mt-36 hidden lg:block "
           />
           <div className="">
           <SectionName>Appointment</SectionName>

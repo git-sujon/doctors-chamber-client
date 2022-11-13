@@ -4,14 +4,13 @@ const TestimonialCard = ({ testimonialCard }) => {
   const { paragraph, reviewerName, reviewerImg, reviewerLocation } =
     testimonialCard;
   return (
-    <div className="card w-96 bg-base-100 shadow-xl">
+    <div className="card shadow-xl">
       <div className="card-body">
         <p>{paragraph}</p>
 
         <div className="card-actions justify-start items-center mt-2">
           <div className="avatar">
             <div className="w-20 rounded-full">
-             <div></div>
              <img src={reviewerImg} alt="" />
             </div>
            

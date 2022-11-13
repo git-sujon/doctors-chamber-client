@@ -1,5 +1,6 @@
 import React from 'react';
 import Appointment from './Appointment/Appointment';
+import Contact from './Contact/Contact';
 import ExceptionalCTA from './ExceptionalCTA/ExceptionalCTA';
 import HomeBanner from './HomeBanner';
 import InfoCards from './InfoCards/InfoCards';
@@ -15,6 +16,7 @@ const Home = () => {
             <ExceptionalCTA></ExceptionalCTA>
             <Appointment></Appointment>
             <Testimonial></Testimonial>
+            <Contact></Contact>
         </div>
     );
 };

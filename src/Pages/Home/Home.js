@@ -14,7 +14,7 @@ const Home = () => {
             <OurServices></OurServices>
             <ExceptionalCTA></ExceptionalCTA>
             <Appointment></Appointment>
-          
+            <Testimonial></Testimonial>
         </div>
     );
 };

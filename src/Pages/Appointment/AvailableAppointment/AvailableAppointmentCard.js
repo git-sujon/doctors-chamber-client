@@ -6,7 +6,7 @@ const AvailableAppointmentCard = ({ appinfo , setModalInfo}) => {
   const { name, slots } = appinfo;
 
   return (
-    <div className="card w-96  shadow-xl text-center">
+    <div className="card w-96 mx-auto  shadow-xl text-center">
       <div className="card-body">
         <h2 className="text-xl text-secondary font-bold text-center">{name}</h2>
         <p className="text-gray-700">

@@ -16,8 +16,8 @@ const AvailableAppointment = ({selectedDate}) => {
 
     }, [])
     return (
-        <div>
-            <p className='text-secondary font-bold text-center'>Available Appointments on <span className='text-gray-800'>{format (selectedDate, 'PPPP')}</span></p>
+        <div className=''>
+            <p className='text-secondary font-bold text-center my-10'>Available Appointments on <span className='text-gray-800'>{format (selectedDate, 'PPPP')}</span></p>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
             {
                 appointmentCardInfo.map(appinfo => <AvailableAppointmentCard 

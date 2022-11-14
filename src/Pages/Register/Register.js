@@ -8,7 +8,9 @@ const Register = () => {
     }
   });
 
-
+const googleHandler =() => {
+    
+}
 
   return (
     <div className="my-32 px-10">
@@ -64,7 +66,10 @@ const Register = () => {
         </div>
 
         <input type="submit" value="Submit" className="btn btn-accent" />
-      </form>
+        <div className="divider">OR</div>
+        <button onClick={googleHandler} className="btn btn-outline">Continue Wtth Google</button>
+      </form> 
+    
     </div>
   );
 };

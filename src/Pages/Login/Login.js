@@ -6,7 +6,9 @@ const Login = () => {
 
     const {register, handleSubmit} =useForm()
   
-
+    const googleHandler =() => {
+    
+    }
 
   return (
     <div className="my-32 px-10">

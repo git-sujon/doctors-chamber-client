@@ -4,8 +4,15 @@ import { AuthContext } from "../../Contexts/AuthProvider";
 
 const Navbar = () => {
 
-  const {user} = useContext(AuthContext)
+  const {user, logOut} = useContext(AuthContext)
   console.log(user)
+
+  const logoutHandler = () => {
+    logOut()
+    .then(()=> {})
+    .catch(err=> console.error(err))
+  }
+
 
   const menus = (
     <React.Fragment>
@@ -29,9 +36,16 @@ const Navbar = () => {
         <Link to='contact' >Contact Us</Link>
       </li>
 
-      <li>
+      <>
+      
+      {
+        user?.email ? 
+        <button className="btn btn-accent" onClick={logoutHandler}>Logout</button>
+     :  <li>
         <Link to='login'>Login</Link>
       </li>
+      }</>
+      
     </React.Fragment>
   );
 
@@ -68,6 +82,9 @@ const Navbar = () => {
         <ul className="menu menu-horizontal p-0">
         {menus}
         </ul>
+
+
+
       </div>
  
     </div>

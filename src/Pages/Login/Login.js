@@ -1,30 +1,59 @@
 import { GoogleAuthProvider } from "firebase/auth";
 import React, { useContext } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthProvider";
 
 const Login = () => {
-  const { register, handleSubmit } = useForm();
-  const { userLogin, userSignUp, logInWithPrvider } = useContext(AuthContext);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset
+  } = useForm();
+  const { userLogin, logInWithPrvider } = useContext(AuthContext);
+  const googleProvider = new GoogleAuthProvider();
+  const [loginError, setLoginError] = useState('')
+  const navigate = useNavigate()
+  const location= useLocation()
+  const from=location?.state?.from?.pathName || '/'
 
-  const googleProvider = new GoogleAuthProvider()
+  const handlerForm = (event) => {
+    setLoginError('')
+    userLogin(event.email, event.password)
+    .then(res=> {
+      const user = res.user
+      console.log(user)
+      navigate(from , {replace: true})
+      reset()
 
-  const handlerForm =(event) => {
-  console.log(event)
 
-  }
-
-
-
-  const googleHandler = () => {
-    logInWithPrvider(googleProvider);
+    })
+    .catch(err=> {
+      console.error(err)
+      setLoginError(err.message)
+    })
   };
 
+  const googleHandler = () => {
+    logInWithPrvider(googleProvider)
+    .then((res) => {
+      const user= res.user
+      console.log(user)
+    })
+    .catch(err => {
+    console.error(err)
+    setLoginError(err.message)
+    })
+  };
+
+
   return (
-    <div className="my-32 px-10">
+    <div className="my-32 px-10 ">
       <h2 className="text-2xl text-center">Login</h2>
-      <form
+    <div className="">
+    <form
         onSubmit={handleSubmit(handlerForm)}
         className="flex flex-col lg:w-2/6 md:w-3/6 space-y-4 mx-auto"
       >
@@ -34,7 +63,7 @@ const Login = () => {
           </label>
           <input
             type="email"
-            {...register("name")}
+            {...register("email")}
             className="input input-bordered  "
           />
         </div>
@@ -45,11 +74,13 @@ const Login = () => {
           </label>
           <input
             type="password"
-            {...register("password")}
+            {...register("password", {required: "Please Enter Password" , minLength: {value: 6,message: "MInimum Six Characters" } })}
             className="input input-bordered  "
           />
+          <Link className="text-gray-500 text-sm">Forgot Password?</Link>
+          <p className="text-error">{errors?.password?.message || loginError} </p>
+          {/* <p className="text-error"></p> */}
         </div>
-
         <input type="submit" value="Submit" className="btn btn-accent" />
         <p>
           New to Doctors Chamber?{" "}
@@ -58,10 +89,15 @@ const Login = () => {
           </Link>
         </p>
         <div className="divider">OR</div>
-        <button onClick={googleHandler} className="btn btn-outline">
-          Continue With Google
-        </button>
       </form>
+      
+    </div>
+    
+   <div>
+   <button onClick={googleHandler} className="btn btn-outline block lg:w-2/6 md:w-3/6  mx-auto mt-4">
+        Continue With Google
+      </button>
+   </div>
     </div>
   );
 };

@@ -3,49 +3,54 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthProvider";
 
 const Navbar = () => {
-
-  const {user, logOut} = useContext(AuthContext)
-  console.log(user)
+  const { user, logOut } = useContext(AuthContext);
 
   const logoutHandler = () => {
     logOut()
-    .then(()=> {})
-    .catch(err=> console.error(err))
-  }
-
+      .then(() => {})
+      .catch((err) => console.error(err));
+  };
 
   const menus = (
     <React.Fragment>
-      <li >
-        <Link to='/'>Home</Link>
+      <li>
+        <Link to="/">Home</Link>
       </li>
 
       <li>
-        <Link to='/about'>About</Link>
+        <Link to="/about">About</Link>
       </li>
 
       <li>
-        <Link to='appointment' >Appointment</Link>
+        <Link to="appointment">Appointment</Link>
       </li>
 
       <li>
-        <Link to='reviews' >Reviews</Link>
+        <Link to="reviews">Reviews</Link>
       </li>
 
       <li>
-        <Link to='contact' >Contact Us</Link>
+        <Link to="contact">Contact Us</Link>
       </li>
 
       <>
-      
-      {
-        user?.email ? 
-        <button className="btn btn-accent" onClick={logoutHandler}>Logout</button>
-     :  <li>
-        <Link to='login'>Login</Link>
-      </li>
-      }</>
-      
+        {user?.uid ? (
+          <>
+            <li>
+              <Link to="dashboard">Dashboard</Link>
+            </li>
+            <button className="btn btn-accent " onClick={logoutHandler}>
+              Logout
+            </button>
+          </>
+        ) : (
+          <li>
+            <Link className="btn btn-accent text-white focus:bg-accent" to="login">
+              Login
+            </Link>
+          </li>
+        )}
+      </>
     </React.Fragment>
   );
 
@@ -73,20 +78,16 @@ const Navbar = () => {
             tabIndex={0}
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
-           {menus}
+            {menus}
           </ul>
         </div>
-        <Link className="btn btn-ghost normal-case text-xl">Doctors Chamber</Link>
+        <Link className="btn btn-ghost normal-case text-xl">
+          Doctors Chamber
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal p-0">
-        {menus}
-        </ul>
-
-
-
+        <ul className="menu menu-horizontal p-0">{menus}</ul>
       </div>
- 
     </div>
   );
 };

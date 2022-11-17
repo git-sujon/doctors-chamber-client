@@ -1,22 +1,49 @@
-import React from "react";
+import { GoogleAuthProvider } from "firebase/auth";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../Contexts/AuthProvider";
 
 const Register = () => {
-  const { register, handleSubmit, watch, formState: {errors} } = useForm({
-    defaultValues: {
-        
-    }
-  });
+  const { register, handleSubmit, watch, formState: {errors} } = useForm();
+  const {logInWithPrvider,  userSignUp, userProfileUpdate} = useContext(AuthContext )
+  const googleProvider = new GoogleAuthProvider();
+  const [loginError, setLoginError] = useState('')
 
   const registerHandler = (event) => {
-  console.log(event)
+  console.log(event.name, event.photoURL)
+  const userInfo = {
+    displayName: event.name,
+    photoURL: event.photoURL,
+  }
+
+  userSignUp(event.email, event.password)
+    .then(res=> {
+      const user= res.user
+      userProfileUpdate(userInfo)
+      .then(()=> {})
+      .catch(err => {
+        setLoginError(err.message)
+      })
+    })
+    .catch(err => {console.error(err)
+      setLoginError(err.message)})
+
+
+  
+
 
   }
 
-const googleHandler =() => {
-    
-}
+  const googleHandler = () => {
+    logInWithPrvider(googleProvider)
+    .then((res) => {
+      const user= res.user
+      console.log(user)
+    })
+    .catch(err => {console.error(err)
+      setLoginError(err.message)})
+  };
 
   return (
     <div className="my-32 px-10">
@@ -40,6 +67,19 @@ const googleHandler =() => {
 
         <div className="form-control  ">
           <label className="label">
+            <span className="label-text">PhotoUrl</span>
+          </label>
+          <input
+            type="text"
+            {...register("photoURL", {required: 'THis Field is required'})}
+            className="input input-bordered  "
+          />
+
+               <p className="text-error">{errors?.photoURL?.message}</p>
+        </div>
+
+        <div className="form-control  ">
+          <label className="label">
             <span className="label-text">Email</span>
           </label>
           <input
@@ -48,7 +88,7 @@ const googleHandler =() => {
             className="input input-bordered  "
           />
 
-               <p className="text-error">{errors?.name?.message}</p>
+               <p className="text-error">{errors?.email?.message}</p>
         </div>
 
         <div className="form-control  ">
@@ -70,15 +110,17 @@ const googleHandler =() => {
             )}
             className="input input-bordered  "
           />
-        <p className="text-error">{errors?.password?.message}</p>
+        <p className="text-error">{errors?.password?.message || loginError}</p>
         </div>
 
         <input type="submit" value="Submit" className="btn btn-accent" />
-        <p>Already have an Account? <Link className="text-secondary" to='/login'>Login In</Link></p>
+        <p>Already have an Account? <Link className="text-secondary" to='/login'>Login</Link></p>
         <div className="divider">OR</div>
-        <button onClick={googleHandler} className="btn btn-outline">Continue With Google</button>
-      </form> 
     
+      </form> 
+      <button onClick={googleHandler} className="btn btn-outline block lg:w-2/6 md:w-3/6  mx-auto mt-4">
+        Continue With Google
+      </button>
     </div>
   );
 };

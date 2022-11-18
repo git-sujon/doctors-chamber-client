@@ -25,7 +25,7 @@ const AppointmentFormModal = ({ modalInfo, setModalInfo ,selectedDate, refetch }
        phone, email, slot, servicesNameId: _id 
     }
    
-    console.log(modalInfo)
+
 
     fetch(`http://localhost:5000/bookings`, {
       method: 'POST',
@@ -40,12 +40,16 @@ const AppointmentFormModal = ({ modalInfo, setModalInfo ,selectedDate, refetch }
       return res.json()
     })
     .then(data=> {
+      console.log(data)
       
       if(data.acknowledged) {
         setModalInfo(null)
         toast.success("Booking Confirm")
         refetch()
         
+      }
+      else {
+        toast.error(data.message)
       }
       
     })

@@ -8,7 +8,6 @@ import AvailableAppointmentCard from "./AvailableAppointmentCard";
 
 const AvailableAppointment = ({ selectedDate }) => {
   const date = format(selectedDate, "PPPP");
-  console.log(date);
 
   // const [appointmentCardInfo,setAppointmentCardInfo] = useState([])
   const [modalInfo, setModalInfo] = useState(null);

@@ -1,49 +1,88 @@
 import { GoogleAuthProvider } from "firebase/auth";
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthProvider";
+import toast from "react-hot-toast";
 
 const Register = () => {
-  const { register, handleSubmit, watch, formState: {errors} } = useForm();
-  const {logInWithPrvider,  userSignUp, userProfileUpdate} = useContext(AuthContext )
+  const navigate= useNavigate()
+  const location =useLocation()
+  const from= location?.state?.from?.pathName || '/'
+  const {
+    register,
+    handleSubmit,
+   
+    formState: { errors },
+  } = useForm();
+  const { logInWithPrvider, userSignUp, userProfileUpdate } =
+    useContext(AuthContext);
   const googleProvider = new GoogleAuthProvider();
-  const [loginError, setLoginError] = useState('')
+  const [loginError, setLoginError] = useState("");
 
   const registerHandler = (event) => {
-  console.log(event.name, event.photoURL)
-  const userInfo = {
-    displayName: event.name,
-    photoURL: event.photoURL,
-  }
+    console.log(event.name, event.photoURL);
+    const userInfo = {
+      displayName: event.name,
+      photoURL: event.photoURL,
+    };
 
-  userSignUp(event.email, event.password)
-    .then(res=> {
-      const user= res.user
-      userProfileUpdate(userInfo)
-      .then(()=> {})
-      .catch(err => {
-        setLoginError(err.message)
+    userSignUp(event.email, event.password)
+      .then((res) => {
+        const user = res.user;
+        userProfileUpdate(userInfo)
+          .then(() => {
+            storingUsers( event.name ,event.photoURL, event.email, event.password)
+          })
+          .catch((err) => {
+            setLoginError(err.message);
+
+          });
       })
+      .catch((err) => {
+        console.error(err);
+        setLoginError(err.message);
+      });
+
+  };
+
+  const storingUsers = (name, photoURL, email, password) => {
+    const user= {
+      name, photoURL, email, password
+    }
+    fetch(`http://localhost:5000/users`, {
+      method:"POST", 
+      headers: {
+        "content-type": "application/json"
+      },
+      body:JSON.stringify(user)
     })
-    .catch(err => {console.error(err)
-      setLoginError(err.message)})
+    .then(res=> res.json())
+    .then(data => {
+      console.log(data)
+      toast.success("User Created")
+      navigate('/', {replace: true})
 
-
-  
-
-
+    })
   }
 
   const googleHandler = () => {
     logInWithPrvider(googleProvider)
-    .then((res) => {
-      const user= res.user
-      console.log(user)
-    })
-    .catch(err => {console.error(err)
-      setLoginError(err.message)})
+      .then((res) => {
+        const user = res.user;
+        console.log(user);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoginError(err.message);
+      });
   };
+
+
+  const jwtTokent = () => {
+    fetch()
+  }
+
 
   return (
     <div className="my-32 px-10">
@@ -58,11 +97,11 @@ const Register = () => {
           </label>
           <input
             type="text"
-            {...register("name", {required: 'THis Field is required'})}
+            {...register("name", { required: "THis Field is required" })}
             className="input input-bordered  "
           />
 
-               <p className="text-error">{errors?.name?.message}</p>
+          <p className="text-error">{errors?.name?.message}</p>
         </div>
 
         <div className="form-control  ">
@@ -71,11 +110,11 @@ const Register = () => {
           </label>
           <input
             type="text"
-            {...register("photoURL", {required: 'THis Field is required'})}
+            {...register("photoURL", { required: "THis Field is required" })}
             className="input input-bordered  "
           />
 
-               <p className="text-error">{errors?.photoURL?.message}</p>
+          <p className="text-error">{errors?.photoURL?.message}</p>
         </div>
 
         <div className="form-control  ">
@@ -84,11 +123,11 @@ const Register = () => {
           </label>
           <input
             type="text"
-            {...register("email", {required: 'THis Field is required'})}
+            {...register("email", { required: "THis Field is required" })}
             className="input input-bordered  "
           />
 
-               <p className="text-error">{errors?.email?.message}</p>
+          <p className="text-error">{errors?.email?.message}</p>
         </div>
 
         <div className="form-control  ">
@@ -97,28 +136,41 @@ const Register = () => {
           </label>
           <input
             type="password"
-            
-            {...register("password", 
-             {required: 'THis Field is required',
-              minLength: {
-                value:6,
-                message: "At least Six Characters"
-            }
-          },
-          {pattern: /((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6}))/ , message: "Provide a Strong Password "},
-            
+            {...register(
+              "password",
+              {
+                required: "THis Field is required",
+                minLength: {
+                  value: 6,
+                  message: "At least Six Characters",
+                },
+              },
+              {
+                pattern:
+                  /((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6}))/,
+                message: "Provide a Strong Password ",
+              }
             )}
             className="input input-bordered  "
           />
-        <p className="text-error">{errors?.password?.message || loginError}</p>
+          <p className="text-error">
+            {errors?.password?.message || loginError}
+          </p>
         </div>
 
         <input type="submit" value="Submit" className="btn btn-accent" />
-        <p>Already have an Account? <Link className="text-secondary" to='/login'>Login</Link></p>
+        <p>
+          Already have an Account?{" "}
+          <Link className="text-secondary" to="/login">
+            Login
+          </Link>
+        </p>
         <div className="divider">OR</div>
-    
-      </form> 
-      <button onClick={googleHandler} className="btn btn-outline block lg:w-2/6 md:w-3/6  mx-auto mt-4">
+      </form>
+      <button
+        onClick={googleHandler}
+        className="btn btn-outline block lg:w-2/6 md:w-3/6  mx-auto mt-4"
+      >
         Continue With Google
       </button>
     </div>

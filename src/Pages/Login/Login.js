@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthProvider";
+import UseToken from "../../Hooks/UseToken";
 
 const Login = () => {
   const {
@@ -12,12 +13,21 @@ const Login = () => {
     formState: { errors },
     reset
   } = useForm();
+
   const { userLogin, logInWithPrvider } = useContext(AuthContext);
   const googleProvider = new GoogleAuthProvider();
   const [loginError, setLoginError] = useState('')
+  const [loginUseremail, setLoginUseremail] = useState('')
+  const [token] = UseToken(loginUseremail)
   const navigate = useNavigate()
   const location= useLocation()
   const from=location?.state?.from?.pathName || '/'
+
+
+
+  if(token){
+    navigate(from , {replace: true})
+  }
 
   const handlerForm = (event) => {
     setLoginError('')
@@ -25,8 +35,8 @@ const Login = () => {
     .then(res=> {
       const user = res.user
       console.log(user)
-      navigate(from , {replace: true})
-      reset()
+      setLoginUseremail(event.email)
+
 
 
     })
@@ -40,7 +50,8 @@ const Login = () => {
     logInWithPrvider(googleProvider)
     .then((res) => {
       const user= res.user
-      console.log(user)
+      console.log(user.email)
+
     })
     .catch(err => {
     console.error(err)

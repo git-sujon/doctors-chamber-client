@@ -4,11 +4,19 @@ import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthProvider";
 import toast from "react-hot-toast";
+import UseToken from "../../Hooks/UseToken";
 
 const Register = () => {
   const navigate= useNavigate()
   const location =useLocation()
   const from= location?.state?.from?.pathName || '/'
+  const [createdUseremail,setCreatedUseremail ] = useState('')
+  const [token]= UseToken(createdUseremail)
+
+  if(token){
+    navigate('/')
+  }
+
   const {
     register,
     handleSubmit,
@@ -61,7 +69,8 @@ const Register = () => {
     .then(data => {
       console.log(data)
       toast.success("User Created")
-      navigate('/', {replace: true})
+      setCreatedUseremail(email)
+      
 
     })
   }
@@ -71,6 +80,7 @@ const Register = () => {
       .then((res) => {
         const user = res.user;
         console.log(user);
+        storingUsers( user.displayName ,user.photoURL, user.email, user?.password)
       })
       .catch((err) => {
         console.error(err);
@@ -79,10 +89,7 @@ const Register = () => {
   };
 
 
-  const jwtTokent = () => {
-    fetch()
-  }
-
+  
 
   return (
     <div className="my-32 px-10">

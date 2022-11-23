@@ -7,7 +7,7 @@ import { AuthContext } from "../../../Contexts/AuthProvider";
 const AppointmentFormModal = ({ modalInfo, setModalInfo ,selectedDate, refetch }) => {
   const date= format(selectedDate, 'PPPP')
   const {user} = useContext(AuthContext)
-  const { name, slots, _id } = modalInfo;
+  const { name, slots, _id,price } = modalInfo;
 
   const bookingFormHandler = (event) => {
     event.preventDefault();
@@ -22,7 +22,7 @@ const AppointmentFormModal = ({ modalInfo, setModalInfo ,selectedDate, refetch }
       appintmentDate: date,
       servicesName: name,
       patientName,
-       phone, email, slot, servicesNameId: _id 
+       phone, email, slot, servicesNameId: _id , price
     }
    
 

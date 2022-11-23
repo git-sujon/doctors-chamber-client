@@ -8,7 +8,7 @@ const ManageDoctors = () => {
   const [deletingDoctor, setDeletingDoctor] = useState(null) 
   
   const {
-    data: doctors,
+    data: doctors =[],
     isLoading,
     refetch,
   } = useQuery({
@@ -62,7 +62,7 @@ const ManageDoctors = () => {
             </tr>
           </thead>
           <tbody>
-            {doctors.map((doctor, idx) => (
+            {doctors?.map((doctor, idx) => (
               <tr key={doctor._id}>
                 <th>{idx + 1}</th>
                 <td>

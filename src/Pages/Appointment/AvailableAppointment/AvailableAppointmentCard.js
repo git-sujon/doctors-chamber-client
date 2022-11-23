@@ -3,7 +3,7 @@ import PrimaryButton from "../../../componets/PrimaryButton";
 import AppointmentFormModal from "../AppointmentFormModal/AppointmentFormModal";
 
 const AvailableAppointmentCard = ({ appinfo , setModalInfo}) => {
-  const { name, slots } = appinfo;
+  const { name, slots, price } = appinfo;
 
   return (
     <div className="card w-96 mx-auto  shadow-xl text-center">
@@ -15,6 +15,7 @@ const AvailableAppointmentCard = ({ appinfo , setModalInfo}) => {
         <p className="text-gray-700">{`${
           slots.length > 0 ? slots.length : "No"
         } ${slots.length <= 1 ? "SPACE" : "SPACES"} AVAILABLE`}</p>
+        <p>price ${price}</p>
         <div className="card-actions justify-center">
           <label disabled= {slots.length === 0} onClick={()=>setModalInfo(appinfo)} htmlFor="AppointmentFormModalId" className={`btn ${slots.length === 0 ? 'btn-accent': 'btn-primary ' }   text-white `}>
           Book Appointment
